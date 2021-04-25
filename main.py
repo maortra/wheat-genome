@@ -65,7 +65,7 @@ def open_TE(te_file_name):
     NUMBER_OF_LINES_THAT_REPRESENTS_GFF_HEADER = 13
     return pandas.read_csv(te_file_name, "\t", skiprows=NUMBER_OF_LINES_THAT_REPRESENTS_GFF_HEADER, header=None,
                            names=["Chr", "Ver", "Type", "startIndex", "endIndex", "Irrelevant1", "Irrelevant2",
-                                  "Irrelevant3", "TEName"]).drop(
+                                  "Irrelevant3", "TEName"], compression=None).drop(
         columns=["Irrelevant1", "Irrelevant2", "Irrelevant3", "Ver", "Type"])
 
 
@@ -78,7 +78,7 @@ def has_overlap(gene_start, gene_end, tra_start, tra_end):
     return True
 
 
-a = open_TE("PGSB_Transposon_annotation-v1__Triticum_aestivum_ArinaLrFor_v3.0.gff")
+a = open_TE("PGSB_Transposon_annotation-v1__Triticum_aestivum_ArinaLrFor_v3.0.gff.gz")
 
 b = open_gene(r"D:\Code\WheatGenome\projectedGenes__Triticum_aestivum_ArinaLrFor_v3.0.gff")
 
@@ -97,14 +97,8 @@ for _, gene in tqdm.tqdm(b.iterrows()):
                               "overlap": found_overlapping_transposon}, ignore_index=True)
     results.to_csv("results.csv")
 
-
 # download_genes()
 # download_TEs()
 
-### DESIRED FLOW
-# TODO 1. REading all dataframes of genes
-# TODO 2. FIltering unwanted genes from each dataframe
-# TODO 3. Combining all dataframes into one dataframe and adding a column indicating the source of each genome
-#   * Naming the source dataframe using the regex: "_aestivum_(.*)_.*\.gff"
-
-# ---Continuing with TE in GENE Flow---
+# TODO: Iterate on all accessions.
+# Add the acession name to the results dataframe
